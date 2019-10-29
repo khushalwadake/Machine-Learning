@@ -3,6 +3,8 @@ Learnings: 1) Scaling and encoding required on fetures
            2) Encoding required for data to be predicted if it is categorical
            3) Cross validation, drop out use -- will use in next version
            4) Use of Convolution and Pooling can improve accuracy -- Need to be tested.
+           5) Accuracy on Train Set:0.9939, Accuracy on Test Set:0.96800 -- Not Bad for first time.. :) Looks like overfitting is causing accuracy % difference in test and train. Dropout can help to improve accuracy.
+           
 
 #import libraries
 import pandas as pd
@@ -39,39 +41,31 @@ classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metric
 # Fitting the ANN to the Training set
 classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
 
--------------------------------------------------------------------------------
-Output
-Epoch 51/100
-42000/42000 [==============================] - 66s 2ms/step - loss: 0.0869 - accuracy: 0.9925 
-Epoch 52/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.1079 - accuracy: 0.9920 
-Epoch 53/100
-42000/42000 [==============================] - 78s 2ms/step - loss: 0.1017 - accuracy: 0.9923  - ETA: 1:06 - loss: 0.1227 - accuracy: 0.9937 - ETA: 1:00 - loss: 0.1741 - accuracy: 0.9920
-Epoch 54/100
-42000/42000 [==============================] - 71s 2ms/step - loss: 0.1087 - accuracy: 0.9932  - ETA: 1s - loss: 0.0919 - accuracy: 0.9932
-Epoch 55/100
-42000/42000 [==============================] - 70s 2ms/step - loss: 0.1247 - accuracy: 0.9927 
-Epoch 56/100
-42000/42000 [==============================] - 70s 2ms/step - loss: 0.1031 - accuracy: 0.9916 
-Epoch 57/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.0806 - accuracy: 0.9929 38090/42000 [==========================>...] - ETA: 6s - loss: 0.0842 - accuracy: 0.9929
-Epoch 58/100
-42000/42000 [==============================] - 72s 2ms/step - loss: 0.1291 - accuracy: 0.9927 
-Epoch 59/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.0562 - accuracy: 0.9939  - ETA: 3s - loss: 0.0545 - accuracy: 0.9939
-Epoch 60/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.0923 - accuracy: 0.9931 
-Epoch 61/100
-42000/42000 [==============================] - 68s 2ms/step - loss: 0.1034 - accuracy: 0.9932 
-Epoch 62/100
-42000/42000 [==============================] - 67s 2ms/step - loss: 0.1284 - accuracy: 0.9931 17170/42000 [===========>..................] - ETA: 38s - loss: 0.0955 - accuracy: 0.9928
-Epoch 63/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.1072 - accuracy: 0.9930 
-Epoch 64/100
-42000/42000 [==============================] - 69s 2ms/step - loss: 0.1089 - accuracy: 0.9933 
-Epoch 65/100
-42000/42000 [==============================] - 75s 2ms/step - loss: 0.0931 - accuracy: 0.9931 
+y_pred = classifier.predict(X_test)
+Y_pred_classes =list(np.argmax(y_pred,axis = 1) )
 
+# Genearte Output
+image_id=list(range(1,28001))
+output=pd.DataFrame()
+output['ImageId']=image_id
+output['Label']=Y_pred_classes
+
+output.to_csv("submission.csv",index=False)
+
+-------------------------------------------------------------------------------
+Accuracy on Train Set
+Epoch 98/100
+42000/42000 [==============================] - 68s 2ms/step - loss: 0.1887 - accuracy: 0.9921 
+Epoch 99/100
+42000/42000 [==============================] - 69s 2ms/step - loss: 0.1032 - accuracy: 0.9936ETA: 26s - loss: 0.1064 - accuracy: 0.9942
+Epoch 100/100
+42000/42000 [==============================] - 67s 2ms/step - loss: 0.0960 - accuracy: 0.9939 
 ----------------------------
+Accuracy on Test Set :  0.96800
+----------------------------
+
+
+
+
 
 
